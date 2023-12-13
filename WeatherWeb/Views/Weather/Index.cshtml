@@ -1,0 +1,158 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+
+    <title>HAVA DURUMU</title>
+
+    <!-- Loading third party fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+    <link href="~/weather/fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Loading main css file -->
+    <link rel="stylesheet" href="\weather\style.css">
+    <script src="/weather/js/ie-support/html5.js"></script>
+    <script src="/weather/js/ie-support/respond.js"></script>
+</head>
+
+<body>
+    <!--SEARCH-->
+    <br />
+     <h1 style="text-align: center;">HAVA DURUMU TAHMİNİ</h1>
+        @using (Html.BeginForm("Search", "Weather", FormMethod.Post))
+        {
+            <div class="site-content">
+                <div class="hero">
+                    <div class="container">
+                        <form action="/Weather/Search" class="find-location">
+                            <input type="text" placeholder="Şehir Arayınız..." id="cityName" name="cityName">
+                            <input type="submit" value="ARA">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!--SEARCH END-->
+
+        <div class="forecast-table">
+            <div class="container">
+                <div class="forecast-container">
+                    <div class="today forecast">
+                        @if (Model != null && Model.Length > 0)
+                        {
+                            <div class="forecast-header">
+                                <div class="day">@Model[0].Day</div>
+                                <br />
+                                <div class="day">@Model[0].Hour</div>
+                            </div> <!-- .forecast-header -->
+                            <div class="forecast-content">
+                                <div class="location">@ViewBag.CityName</div>
+                                <div class="degree">
+                                    <div class="forecast-icon">
+                                        @Model[0].Symbol
+                                        <br />
+                                        @{
+                                            string[] symbolMappings1 = {
+    "açık,az bulutlu,güneşli", "images/icons/icon-2.svg",
+    "hafif yağmur,yağmurlu", "images/icons/icon-9.svg",
+    "çok şiddetli yağmur,sağanak yağmur,orta şiddetli yağmur,gök gürültülü sağanak yağmur,gök gürültülü,sağanak yağmur,gök gürültülü fırtına", "images/icons/icon-11.svg",
+    "parçalı bulutlu,parçalı az bulutlu,kapalı", "images/icons/icon-3.svg",
+    "puslu", "images/icons/icon-1.svg",
+    "sisli", "images/icons/icon-7.svg",
+    "karlı,yoğun kar yağışlı,şiddetli kar yağışı,yoğun kar,tipi,karla karışık yağmur", "images/icons/icon-14.svg"
+};
+
+                                            string[] symbols1 = Model[0].Symbol.Split(',');
+
+                                            for (int j = 0; j < symbolMappings1.Length; j += 2)
+                                            {
+                                                if (symbols1.Any(s => symbolMappings1[j].Contains(s)))
+                                                {
+                                                    <img src="@symbolMappings1[j + 1]" alt="Hava Icon">
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                    <br />
+
+                                    <div class="degree">@Model[0].Temperature<sup>o</sup>C</div>
+                                    <small>@Model[0].MaxTemperature / @Model[0].MinTemperature<sup>o</sup></small>
+
+                                </div>
+                                <span>Hissedilen: @Model[0].FeelsLike</span>
+                                <span><img src="images/icon-umberella.png" alt="">Yağış:@Model[0].Precipitation%</span>
+                                <span><img src="images/icon-wind.png" alt="">Rüzgar Hızı:@Model[0].WindSpeed m/s</span>
+                                <span>Nem: @Model[0].Humidity</span>
+                            </div>
+                        }
+                        else
+                        {
+
+                        }
+                    </div>
+                    @if (Model != null && Model.Length > 0)
+                    {
+                        for (int i = 1; i < Model.Length; i++)
+                        {
+                            <div class="forecast small">
+                                <div class="forecast-header">
+                                    <div class="day">@Model[i].Day</div>
+                                    <div class="day">@Model[i].Hour</div>
+                                </div>
+                                <div class="forecast-content">
+                                    <div class="forecast-icon">
+                                        @Model[i].Symbol
+                                        <br />
+                                        <br />
+                                        @{
+                                            string[] symbolMappings = {
+                "açık,az bulutlu,güneşli", "images/icons/icon-2.svg",
+                "hafif yağmur,yağmurlu,orta şiddetli yağmur", "images/icons/icon-9.svg",
+                "çok şiddetli yağmur,sağanak yağmur,gök gürültülü sağanak yağmur,gök gürültülü,sağanak yağmur,gök gürültülü fırtına", "images/icons/icon-11.svg",
+                "parçalı bulutlu,parçalı az bulutlu,kapalı", "images/icons/icon-3.svg",
+                "puslu", "images/icons/icon-1.svg",
+                "sisli", "images/icons/icon-7.svg",
+                "karlı,yoğun kar yağışlı,şiddetli kar yağışı,yoğun kar,tipi,karla karışık yağmur", "images/icons/icon-14.svg"
+            };
+
+                                            string[] symbols = Model[i].Symbol.Split(',');
+
+                                            for (int j = 0; j < symbolMappings.Length; j += 2)
+                                            {
+                                                if (symbols.Any(s => symbolMappings[j].Contains(s)))
+                                                {
+                                                    <img src="@symbolMappings[j + 1]" alt="Hava Icon">
+                                                    break;
+                                                }
+                                            }
+                                            <br />
+                                            <br />
+                                            <div class="degree">@Model[i].Temperature<sup>o</sup>C</div>
+                                            <small>@Model[i].MaxTemperature / @Model[i].MinTemperature<sup>o</sup></small>
+
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                    }
+                </div>
+            </div>
+            <script src="~/weather/js/jquery-1.11.1.min.js"></script>
+            <script src="~/weather/js/plugins.js"></script>
+            <script src="~/weather/js/app.js"></script>
+        </div>
+
+</body>
+</html>
