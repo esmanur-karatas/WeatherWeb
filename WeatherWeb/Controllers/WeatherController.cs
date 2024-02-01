@@ -16,7 +16,7 @@ namespace WeatherWeb.Controllers
 {
     public class WeatherController : Controller
     {
-        // GET: Weather
+        // GET
         public ActionResult Index(string cityName, string cityName1)
         {
             return View();
@@ -40,7 +40,7 @@ namespace WeatherWeb.Controllers
                 {
                     var weatherData = new WeatherViewModel();
 
-                    // Verileri çekme ve modeli doldurma işlemleri burada devam eder...
+                    
 
                     weatherData.Day = DateTime.TryParseExact(document.Descendants("time").ElementAt(i * 8)?.Attribute("to")?.Value, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime)
                         ? dateTime.ToString("ddd", new CultureInfo("tr-TR"))
@@ -62,13 +62,12 @@ namespace WeatherWeb.Controllers
                     model[i] = weatherData;
                 }
                 ViewBag.CityName = cityName;
-                return View("Index", model); // Arama sonuçlarını Index sayfasında gösteriyoruz.
+                return View("Index", model); 
             }
             catch (Exception)
             {
-                // Hata durumunda nasıl bir davranış sergilemek istediğinize karar verin.
-                // Örneğin, hata mesajını kullanıcıya gösterebilir veya loglayabilirsiniz.
-                return RedirectToAction("Index"); // Hata durumunda varsayılan olarak Index sayfasına yönlendiriyoruz.
+                
+                return RedirectToAction("Index"); 
             }
         }
         private async Task<XDocument> LoadXmlFromUrl(string url)
@@ -83,14 +82,14 @@ namespace WeatherWeb.Controllers
         {
             if (double.TryParse(temperatureValue, out double temperature))
             {
-                int lengthBeforeDecimal = temperatureValue.IndexOf('.'); // Noktadan önceki karakter sayısı
+                int lengthBeforeDecimal = temperatureValue.IndexOf('.'); 
                 if (lengthBeforeDecimal == 1)
                 {
-                    return temperatureValue.Substring(0, 1); // Noktadan önce 1 karakter ise ilk karakteri al
+                    return temperatureValue.Substring(0, 1); 
                 }
                 else if (lengthBeforeDecimal == 2)
                 {
-                    return temperatureValue.Substring(0, 2); // Noktadan önce 2 karakter ise ilk iki karakteri al
+                    return temperatureValue.Substring(0, 2); 
                 }
             }
             return temperatureValue;
